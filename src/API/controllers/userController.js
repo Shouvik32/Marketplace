@@ -1,7 +1,7 @@
 const User = require('../../models/User'); 
 
 
-const isAuthenticated = (req, res, next) => {
+ exports.isAuthenticated = (req, res, next) => {
   if (req.user) {
     next();
   } else {
@@ -9,7 +9,7 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 
-const isVendor = (req, res, next) => {
+exports.isVendor = (req, res, next) => {
   if (req.user.role === 'vendor' || req.user.role === 'both') {
     next();
   } else {
@@ -17,7 +17,7 @@ const isVendor = (req, res, next) => {
   }
 };
 
-const isCustomer = (req, res, next) => {
+exports.isCustomer = (req, res, next) => {
   if (req.user.role === 'customer' || req.user.role === 'both') {
     next();
   } else {
@@ -26,7 +26,7 @@ const isCustomer = (req, res, next) => {
 };
 
 
-const getUser = async (req, res) => {
+exports.getUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
@@ -36,7 +36,7 @@ const getUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+exports.updateUser = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!user) return res.status(404).json({ message: 'User not found' });
@@ -47,10 +47,3 @@ const updateUser = async (req, res) => {
 };
 
 
-module.exports = {
-  getUser,
-  updateUser,
-  isAuthenticated,
-  isVendor,
-  isCustomer
-};
